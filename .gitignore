@@ -1,0 +1,7 @@
+# root gitignore
+node_modules/
+dist/
+client/node_modules/
+client/dist/
+.env
+.env.*
