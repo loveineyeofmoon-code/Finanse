@@ -34,27 +34,27 @@ const Debts: React.FC = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="page-header">
         <h2>Учет долгов</h2>
-        <div style={{ marginRight: '1rem', fontSize: '0.9rem', color: '#666' }}>
+        <div style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--gray)' }}>
           {getLimitInfo(userData, debts.length, 'debts')}
         </div>
-      </div>
-      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-        <button 
-          className="btn btn-primary" 
-          onClick={() => {
-            if (isLimitReached(debts.length, userData, 'debts')) {
-              alert(getLimitErrorMessage('debts'));
-            } else {
-              setShowAdd(true);
-            }
-          }}
-          disabled={isLimitReached(debts.length, userData, 'debts')}
-        >
-          Добавить долг
-        </button>
-        <button className="btn btn-outline" onClick={() => navigate('/app/profile')}>Профиль</button>
+        <div className="controls">
+          <button 
+            className="btn btn-primary" 
+            onClick={() => {
+              if (isLimitReached(debts.length, userData, 'debts')) {
+                alert(getLimitErrorMessage('debts'));
+              } else {
+                setShowAdd(true);
+              }
+            }}
+            disabled={isLimitReached(debts.length, userData, 'debts')}
+          >
+            Добавить долг
+          </button>
+          <button className="btn btn-outline" onClick={() => navigate('/app/profile')}>Профиль</button>
+        </div>
       </div>
 
       {showAdd && (
@@ -119,35 +119,88 @@ const Debts: React.FC = () => {
         </Modal>
       )}
 
-      <div className="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Тип</th>
-              <th>Кто/кому</th>
-              <th>Сумма</th>
-              <th>Описание</th>
-              <th>Срок</th>
-              <th>Действия</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div className="transactions-section">
+        <div className="transactions-list mobile-cards">
+          {/* Десктопная таблица */}
+          <div className="desktop-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Тип</th>
+                  <th>Кто/кому</th>
+                  <th>Сумма</th>
+                  <th>Описание</th>
+                  <th>Срок</th>
+                  <th>Действия</th>
+                </tr>
+              </thead>
+              <tbody>
+                {debts.map(d => (
+                  <tr key={d.id}>
+                    <td data-label="Тип">{d.type === 'debt_income' ? 'Мне должны' : 'Я должен'}</td>
+                    <td data-label="Кто/кому">{d.person}</td>
+                    <td data-label="Сумма">{formatCurrency(d.amount)}</td>
+                    <td data-label="Описание">{d.description || '-'}</td>
+                    <td data-label="Срок">{formatDate(d.dueDate)}</td>
+                    <td data-label="Действия">
+                      <button className="btn btn-outline action-btn" onClick={() => remove(d.id)}>
+                        Удалить
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          
+          {/* Мобильные карточки */}
+          <div className="transaction-cards-container">
             {debts.map(d => (
-              <tr key={d.id}>
-                <td>{d.type === 'debt_income' ? 'Мне должны' : 'Я должен'}</td>
-                <td>{d.person}</td>
-                <td>{formatCurrency(d.amount)}</td>
-                <td>{d.description || '-'}</td>
-                <td>{formatDate(d.dueDate)}</td>
-                <td>
-                  <button className="btn btn-outline action-btn" onClick={() => remove(d.id)}>
-                    Удалить
-                  </button>
-                </td>
-              </tr>
+              <div key={d.id} className={`transaction-card-mobile ${d.type === 'debt_income' ? 'income' : 'expense'}`}>
+                {/* Заголовок: тип и сумма */}
+                <div className="transaction-header">
+                  <div className="transaction-date">
+                    <i className="fas fa-user"></i>
+                    <span>{d.person}</span>
+                  </div>
+                  <div className={`transaction-type-badge ${d.type === 'debt_income' ? 'income' : 'expense'}`}>
+                    {d.type === 'debt_income' ? 'Мне должны' : 'Я должен'}
+                  </div>
+                </div>
+                
+                {/* Основное содержимое: описание и сумма */}
+                <div className="transaction-content">
+                  <div className="transaction-description">
+                    <div className={`transaction-description-text ${!d.description ? 'transaction-description-empty' : ''}`}>
+                      {d.description || 'Без описания'}
+                    </div>
+                  </div>
+                  <div className="transaction-amount">
+                    <div className={`transaction-amount-value ${d.type === 'debt_income' ? 'income' : 'expense'}`}>
+                      {d.type === 'debt_income' ? '+' : '-'}{formatCurrency(d.amount)}
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Футер карточки: срок и действия */}
+                <div className="transaction-footer">
+                  <div className="transaction-category">
+                    <div className="category-badge">
+                      <i className="fas fa-calendar"></i>
+                      <span>{formatDate(d.dueDate) || 'Без срока'}</span>
+                    </div>
+                  </div>
+                  <div className="transaction-actions">
+                    <button className="action-button btn-outline" onClick={() => remove(d.id)}>
+                      <i className="fas fa-trash"></i>
+                      <span>Удалить</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </div>
       </div>
     </div>
   );
