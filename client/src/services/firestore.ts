@@ -115,19 +115,26 @@ export function subscribeTransactions(userId: string, callback: (items: Transact
     where('userId', '==', userId),
     orderBy('createdAt', 'desc')
   );
-  return onSnapshot(q, (snapshot) => {
-    const list: Transaction[] = [];
-    snapshot.forEach((docSnap) => {
-      const data = docSnap.data() as any;
-      list.push({
-        id: docSnap.id,
-        ...data,
-        date: convertToDateString(data.date),
-        createdAt: convertTimestamp(data.createdAt)
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const list: Transaction[] = [];
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data() as any;
+        list.push({
+          id: docSnap.id,
+          ...data,
+          date: convertToDateString(data.date),
+          createdAt: convertTimestamp(data.createdAt)
+        });
       });
-    });
-    callback(list);
-  });
+      callback(list);
+    },
+    (error) => {
+      console.error('Error fetching transactions:', error);
+      callback([]);
+    }
+  );
 }
 
 export async function addTransaction(userId: string, tx: Omit<Transaction, 'id' | 'createdAt'>) {
@@ -150,19 +157,26 @@ export function subscribeTasks(userId: string, callback: (items: Task[]) => void
     where('userId', '==', userId),
     orderBy('createdAt', 'desc')
   );
-  return onSnapshot(q, (snapshot) => {
-    const list: Task[] = [];
-    snapshot.forEach((docSnap) => {
-      const data = docSnap.data() as any;
-      list.push({
-        id: docSnap.id,
-        ...data,
-        dueDate: data.dueDate ? convertToDateString(data.dueDate) : undefined,
-        createdAt: convertTimestamp(data.createdAt)
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const list: Task[] = [];
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data() as any;
+        list.push({
+          id: docSnap.id,
+          ...data,
+          dueDate: data.dueDate ? convertToDateString(data.dueDate) : undefined,
+          createdAt: convertTimestamp(data.createdAt)
+        });
       });
-    });
-    callback(list);
-  });
+      callback(list);
+    },
+    (error) => {
+      console.error('Error fetching tasks:', error);
+      callback([]);
+    }
+  );
 }
 
 export async function addTask(userId: string, task: Omit<Task, 'id' | 'createdAt'>) {
@@ -189,19 +203,26 @@ export function subscribeGoals(userId: string, callback: (items: Goal[]) => void
     where('userId', '==', userId),
     orderBy('createdAt', 'desc')
   );
-  return onSnapshot(q, (snapshot) => {
-    const list: Goal[] = [];
-    snapshot.forEach((docSnap) => {
-      const data = docSnap.data() as any;
-      list.push({
-        id: docSnap.id,
-        ...data,
-        targetDate: convertToDateString(data.targetDate),
-        createdAt: convertTimestamp(data.createdAt)
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const list: Goal[] = [];
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data() as any;
+        list.push({
+          id: docSnap.id,
+          ...data,
+          targetDate: convertToDateString(data.targetDate),
+          createdAt: convertTimestamp(data.createdAt)
+        });
       });
-    });
-    callback(list);
-  });
+      callback(list);
+    },
+    (error) => {
+      console.error('Error fetching goals:', error);
+      callback([]);
+    }
+  );
 }
 
 export async function addGoal(userId: string, goal: Omit<Goal, 'id' | 'createdAt'>) {
@@ -228,19 +249,26 @@ export function subscribeDebts(userId: string, callback: (items: Debt[]) => void
     where('userId', '==', userId),
     orderBy('createdAt', 'desc')
   );
-  return onSnapshot(q, (snapshot) => {
-    const list: Debt[] = [];
-    snapshot.forEach((docSnap) => {
-      const data = docSnap.data() as any;
-      list.push({
-        id: docSnap.id,
-        ...data,
-        dueDate: data.dueDate ? convertToDateString(data.dueDate) : undefined,
-        createdAt: convertTimestamp(data.createdAt)
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const list: Debt[] = [];
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data() as any;
+        list.push({
+          id: docSnap.id,
+          ...data,
+          dueDate: data.dueDate ? convertToDateString(data.dueDate) : undefined,
+          createdAt: convertTimestamp(data.createdAt)
+        });
       });
-    });
-    callback(list);
-  });
+      callback(list);
+    },
+    (error) => {
+      console.error('Error fetching debts:', error);
+      callback([]);
+    }
+  );
 }
 
 export async function addDebt(userId: string, debt: Omit<Debt, 'id' | 'createdAt'>) {
@@ -263,17 +291,24 @@ export function subscribeCards(userId: string, callback: (items: Card[]) => void
     where('userId', '==', userId),
     orderBy('addedAt', 'desc')
   );
-  return onSnapshot(q, (snapshot) => {
-    const list: Card[] = [];
-    snapshot.forEach((docSnap) => {
-      const data = docSnap.data() as any;
-      list.push({
-        id: docSnap.id,
-        ...data
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const list: Card[] = [];
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data() as any;
+        list.push({
+          id: docSnap.id,
+          ...data
+        });
       });
-    });
-    callback(list);
-  });
+      callback(list);
+    },
+    (error) => {
+      console.error('Error fetching cards:', error);
+      callback([]);
+    }
+  );
 }
 
 export async function addCard(userId: string, card: Omit<Card, 'id'>) {
