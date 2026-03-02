@@ -47,8 +47,9 @@ export async function createYooKassaPayment(
   }
 
   const text = await response.text();
+  console.log('create-payment response status', response.status, 'body', text);
   if (!text) {
-    throw new Error('Empty response from payment service');
+    throw new Error(`Empty response from payment service (status ${response.status})`);
   }
 
   let json;

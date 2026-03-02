@@ -78,7 +78,7 @@ const Analytics: React.FC = () => {
   return (
     <div className="analytics-page">
       <h2>Аналитика</h2>
-      
+
       {subscriptionType === 'free' && (
         <div style={{
           padding: '1.5rem',
@@ -88,42 +88,50 @@ const Analytics: React.FC = () => {
           borderRadius: '8px',
           textAlign: 'center'
         }}>
-          <p style={{ margin: '0 0 0.5rem 0' }}>📊 Аналитика доступна только для подписчиков</p>
-          <p style={{ margin: '0 0 1rem 0', color: '#666' }}>Обновитесь до Премиум или используйте пробный период (14 дней бесплатно)</p>
+          <p style={{ margin: '0 0 0.5rem 0' }}>
+            📊 Базовая аналитика доступна — вы видите только общие суммы. Для полной
+            версии с графиками и подробностями обновитесь до Премиум или
+            используйте пробный период (14 дней бесплатно).
+          </p>
           <button className="btn btn-primary" onClick={() => navigate('/app/subscription')}>
             Выбрать подписку
           </button>
         </div>
       )}
-      
-      {subscriptionType !== 'free' && (
-        <>
-          <div className="stats-cards">
-            <div className="stat-card expense">
-              <h3>Общие расходы</h3>
-              <div className="amount">{formatCurrency(totalExpenses)}</div>
-            </div>
-            <div className="stat-card income">
-              <h3>Общие доходы</h3>
-              <div className="amount">{formatCurrency(totalIncome)}</div>
-            </div>
-            <div className="stat-card balance">
-              <h3>Баланс</h3>
-              <div className="amount">{formatCurrency(totalIncome - totalExpenses)}</div>
-            </div>
-          </div>
-          <div className="table-container">
-            <h3>Расходы по категориям</h3>
-            {Object.keys(expenseByCategory).length === 0 ? (
-              <p className="analytics-empty">Нет данных о расходах. Добавьте транзакции.</p>
-            ) : (
-              <div className="chart-wrapper">
-                <canvas ref={canvasRef} height={250}></canvas>
-              </div>
-            )}
-          </div>
-        </>
+
+      <div className="stats-cards">
+        <div className="stat-card expense">
+          <h3>Общие расходы</h3>
+          <div className="amount">{formatCurrency(totalExpenses)}</div>
+        </div>
+        <div className="stat-card income">
+          <h3>Общие доходы</h3>
+          <div className="amount">{formatCurrency(totalIncome)}</div>
+        </div>
+        <div className="stat-card balance">
+          <h3>Баланс</h3>
+          <div className="amount">{formatCurrency(totalIncome - totalExpenses)}</div>
+        </div>
+      </div>
+
+      {subscriptionType === 'free' && (
+        <p style={{ textAlign: 'center', color: '#666', marginTop: '1rem' }}>
+          📈 Графики и детализированные категории недоступны на бесплатном плане.
+        </p>
       )}
+
+      {subscriptionType !== 'free' ? (
+        <div className="table-container">
+          <h3>Расходы по категориям</h3>
+          {Object.keys(expenseByCategory).length === 0 ? (
+            <p className="analytics-empty">Нет данных о расходах. Добавьте транзакции.</p>
+          ) : (
+            <div className="chart-wrapper">
+              <canvas ref={canvasRef} height={250}></canvas>
+            </div>
+          )}
+        </div>
+      ) : null}
     </div>
   );
 };

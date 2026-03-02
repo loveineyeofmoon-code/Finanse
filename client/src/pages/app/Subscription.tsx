@@ -27,7 +27,7 @@ const Subscription: React.FC = () => {
       const daysLeft = Math.ceil((end.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
       return `🎁 Пробный период: ${daysLeft} дней осталось`;
     }
-    return '📦 План: бесплатный';
+    return '📦 Бесплатный тариф';
   };
 
   return (
@@ -43,45 +43,7 @@ const Subscription: React.FC = () => {
         <p style={{ margin: 0 }}>{statusMessage()}</p>
       </div>
 
-      <div style={{ marginBottom: '2rem' }}>
-        <h3>Ваши текущие лимиты:</h3>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '1rem'
-        }}>
-          <div style={{ padding: '1rem', background: '#f3f4f6', borderRadius: '8px' }}>
-            <div style={{ fontSize: '0.9rem', color: '#666' }}>Транзакции</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', marginTop: '0.5rem' }}>
-              {currentLimits.maxTransactions === 999 ? '∞' : currentLimits.maxTransactions}
-            </div>
-          </div>
-          <div style={{ padding: '1rem', background: '#f3f4f6', borderRadius: '8px' }}>
-            <div style={{ fontSize: '0.9rem', color: '#666' }}>Задачи</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', marginTop: '0.5rem' }}>
-              {currentLimits.maxTasks === 999 ? '∞' : currentLimits.maxTasks}
-            </div>
-          </div>
-          <div style={{ padding: '1rem', background: '#f3f4f6', borderRadius: '8px' }}>
-            <div style={{ fontSize: '0.9rem', color: '#666' }}>Цели</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', marginTop: '0.5rem' }}>
-              {currentLimits.maxGoals === 999 ? '∞' : currentLimits.maxGoals}
-            </div>
-          </div>
-          <div style={{ padding: '1rem', background: '#f3f4f6', borderRadius: '8px' }}>
-            <div style={{ fontSize: '0.9rem', color: '#666' }}>Долги</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', marginTop: '0.5rem' }}>
-              {currentLimits.maxDebts === 999 ? '∞' : currentLimits.maxDebts}
-            </div>
-          </div>
-          <div style={{ padding: '1rem', background: '#f3f4f6', borderRadius: '8px' }}>
-            <div style={{ fontSize: '0.9rem', color: '#666' }}>Аналитика</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', marginTop: '0.5rem' }}>
-              {currentLimits.canUseAnalytics ? '✓' : '✗'}
-            </div>
-          </div>
-        </div>
-      </div>
+
 
       <div className="subscription-plans">
         <div className="plan-card" style={{

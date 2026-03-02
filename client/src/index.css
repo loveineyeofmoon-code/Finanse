@@ -910,7 +910,7 @@ tbody tr:last-child td {
     transform: translateY(-2px);
 }
 
-/* Responsive tweaks */
+/* Responsive tweaks для tablet и desktop */
 @media (max-width: 768px) {
     .hero-title {
         font-size: 2.5rem;
@@ -921,7 +921,7 @@ tbody tr:last-child td {
     }
     
     .features-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
     
     .hero-stats {
@@ -993,32 +993,370 @@ tbody tr:last-child td {
     max-height: 320px;
 }
 
-@media (max-width: 600px) {
+/* УЛУЧШЕННАЯ МОБИЛЬНАЯ АДАПТАЦИЯ */
+
+/* Очень маленькие экраны (до 480px) */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 var(--space-3);
+    }
+    
     .header-content {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        gap: 12px;
     }
+    
+    .logo {
+        font-size: 1.2rem;
+    }
+    
+    .logo-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+    
     .header-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
         margin-top: 10px;
-        flex-wrap: wrap;
-        gap: 10px;
     }
+    
+    .header-actions .btn {
+        width: 100%;
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+    
     .user-menu {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        width: 100%;
+        padding: 8px 12px;
     }
+    
     .user-avatar {
-        margin-bottom: 5px;
+        margin-bottom: 8px;
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+    
+    .user-info {
+        text-align: center;
+        margin-bottom: 8px;
+    }
+    
+    .user-name {
+        font-size: 13px;
+    }
+    
+    .user-email {
+        font-size: 11px;
+    }
+    
+    .auth-box { 
+        padding: 20px;
+        margin: 0 10px;
+    }
+    
+    .auth-content {
+        padding: 30px 10px;
+    }
+    
+    .stat-card { 
+        padding: 16px;
+        min-height: auto;
+    }
+    
+    .stat-card h3 {
+        font-size: 12px;
+    }
+    
+    .stat-card .amount { 
+        font-size: 1.4rem; 
+    }
+    
+    .stat-card .subtext {
+        font-size: 11px;
+    }
+    
+    th, td { 
+        padding: 10px 8px; 
+        font-size: 0.9rem; 
+    }
+    
+    th {
+        font-size: 12px;
+    }
+    
+    .hero-title { 
+        font-size: 1.8rem; 
+    }
+    
+    .table-container { 
+        padding: 12px;
+        margin: 15px 0;
+    }
+    
+    .btn {
+        padding: 10px 16px;
+        font-size: 14px;
+        width: 100%;
+        margin: 6px 0;
+    }
+    
+    .btn-sm {
+        padding: 8px 12px;
+        font-size: 12px;
+        width: 100%;
+    }
+    
+    .btn-lg {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    .form-control {
+        padding: 12px 12px;
+        font-size: 16px;
+        min-height: 44px;
+        border-radius: 8px;
+    }
+    
+    .form-group {
+        margin-bottom: 12px;
+    }
+    
+    .form-group label {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+    
+    .input-icon {
+        left: 12px;
+        font-size: 0.9rem;
+    }
+    
+    .input-with-icon .form-control {
+        padding-left: 38px;
+    }
+    
+    .modal {
+        padding: 8px;
+    }
+    
+    .modal-content {
+        padding: 16px;
+        border-radius: 10px;
+    }
+    
+    .modal-title {
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+    }
+    
+    .close-modal {
+        top: 8px;
+        right: 8px;
+        width: 32px;
+        height: 32px;
+        font-size: 1.1rem;
+    }
+    
+    h1, .hero-title {
+        font-size: 1.5rem;
+        margin-bottom: 12px;
+    }
+    
+    h2 {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+    }
+    
+    h3 {
+        font-size: 1rem;
+    }
+    
+    h4 {
+        font-size: 0.95rem;
+    }
+    
+    .features-grid,
+    .stats-cards,
+    .quick-actions {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .quick-action {
+        padding: 16px;
+        min-height: auto;
+    }
+    
+    .quick-action i {
+        font-size: 2rem;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 16px;
+    }
+    
+    .hero-stats {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .page-title {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .page-title h2 {
+        font-size: 1.3rem;
     }
 }
 
-/* extra mobile polish */
-@media (max-width: 480px) {
-    .auth-box { padding: 20px; }
-    .stat-card .amount { font-size: 1.4rem; }
-    th, td { padding: 10px 8px; font-size: 0.95rem; }
-    .hero-title { font-size: 2rem; }
-    .table-container { padding: 15px; }
+/* Средние мобильные (481px - 600px) - iPhone 6/7/8 */
+@media (min-width: 481px) and (max-width: 600px) {
+    .container {
+        padding: 0 var(--space-3);
+    }
+    
+    .header-content {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    
+    .logo {
+        font-size: 1.4rem;
+    }
+    
+    .header-actions {
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+        margin-top: 8px;
+    }
+    
+    .header-actions .btn {
+        flex: 1;
+        min-width: 70px;
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+    
+    .auth-box {
+        padding: 28px;
+        max-width: 100%;
+    }
+    
+    .auth-content {
+        padding: 40px 16px;
+    }
+    
+    .btn {
+        padding: 11px 22px;
+        font-size: 14px;
+    }
+    
+    .form-control {
+        padding: 13px 14px;
+        font-size: 16px;
+        min-height: 46px;
+    }
+    
+    .features-grid,
+    .stats-cards {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+    }
+    
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    h2 {
+        font-size: 1.4rem;
+    }
+    
+    .page-title {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+/* iPhone 6s Plus и современные Android (601px - 768px) */
+@media (min-width: 601px) and (max-width: 768px) {
+    .container {
+        padding: 0 var(--space-3);
+    }
+    
+    .header-actions {
+        gap: 10px;
+    }
+    
+    .header-actions .btn {
+        white-space: nowrap;
+        font-size: 14px;
+    }
+    
+    .auth-box {
+        padding: 36px;
+        max-width: 440px;
+    }
+    
+    .auth-content {
+        padding: 50px 24px;
+    }
+    
+    .form-control {
+        padding: 15px 16px;
+        font-size: 16px;
+        min-height: 48px;
+    }
+    
+    .features-grid,
+    .stats-cards {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+    }
+    
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .page-title {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .page-title h2 {
+        font-size: 1.8rem;
+    }
 }
 
 /* authentication pages */
@@ -3389,36 +3727,133 @@ textarea.form-control {
     }
 }
 
-/* 7. Адаптация для темной темы (если будет добавлена) */
+/* 7. Адаптация для темной темы (УЛУЧШЕННАЯ) */
 @media (prefers-color-scheme: dark) {
     :root {
-        --bg-app: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        --bg-sidebar: rgba(30, 30, 46, 0.98);
-        --bg-card: #1e1e2e;
-        --bg-hover: rgba(102, 126, 234, 0.1);
-        --dark: #f7fafc;
-        --light: #2d3748;
-        --gray: #a0aec0;
+        --bg-app: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        --bg-sidebar: rgba(15, 23, 42, 0.98);
+        --bg-card: #1e293b;
+        --bg-hover: rgba(102, 126, 234, 0.15);
+        --dark: #f1f5f9;
+        --light: #1e293b;
+        --gray: #cbd5e1;
+    }
+    
+    * {
+        color-scheme: dark;
     }
     
     body {
         color: var(--dark);
+        background: var(--bg-app);
+    }
+    
+    header {
+        background: rgba(15, 23, 42, 0.95);
+        border-bottom-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .footer {
+        background: #0f172a;
     }
     
     .stat-card, .quick-action, .feature-card, .modal-content,
-    .table-container, .alert, .list-group, .auth-box, .plan-card {
+    .table-container, .alert, .list-group, .auth-box, .plan-card,
+    .demo-image, .trust-item {
         background: var(--bg-card);
         color: var(--dark);
+        border-color: rgba(255, 255, 255, 0.1);
     }
     
+    /* Улучшенные стили для input полей - критически важно для видимости */
     .form-control {
-        background: rgba(255, 255, 255, 0.05);
-        border-color: rgba(255, 255, 255, 0.1);
+        background: #334155;
+        border-color: #475569;
         color: var(--dark);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .form-control:hover {
+        background: #3f4e63;
+        border-color: rgba(102, 126, 234, 0.5);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    }
+    
+    .form-control:focus {
+        background: #334155;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.25);
     }
     
     .form-control::placeholder {
-        color: rgba(255, 255, 255, 0.4);
+        color: #94a3b8;
+    }
+    
+    .form-control:disabled {
+        background: #475569;
+        color: #94a3b8;
+    }
+    
+    .form-group label {
+        color: var(--dark);
+    }
+    
+    /* Кнопки в темной теме */
+    .btn-outline {
+        border-color: var(--primary);
+        color: #e0e7ff;
+        background: transparent;
+    }
+    
+    .btn-outline:hover {
+        background: rgba(102, 126, 234, 0.15);
+        border-color: #a5b4fc;
+    }
+    
+    /* Таблицы в темной теме */
+    table {
+        background: var(--bg-card);
+    }
+    
+    th {
+        background: #0f172a;
+        color: var(--dark);
+        border-color: #475569;
+    }
+    
+    td {
+        border-color: #475569;
+        color: var(--dark);
+    }
+    
+    /* Заголовки в темной теме */
+    h1, h2, h3, h4, h5, h6 {
+        color: var(--dark);
+    }
+    
+    /* Элементы меню и навигации */
+    .sidebar-menu a {
+        color: #cbd5e1;
+    }
+    
+    .sidebar-menu a:hover {
+        background: rgba(102, 126, 234, 0.1);
+        color: var(--dark);
+    }
+    
+    /* Особые стили для ползунков и других элементов */
+    input[type="range"] {
+        accent-color: var(--primary);
+    }
+    
+    input[type="checkbox"],
+    input[type="radio"] {
+        accent-color: var(--primary);
+    }
+    
+    /* Селект элементы */
+    select.form-control {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23e0e7ff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
     }
     
     .scroll-shadow::before {

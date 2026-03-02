@@ -10,10 +10,10 @@ export interface SubscriptionLimits {
 
 export const SUBSCRIPTION_LIMITS: Record<string, SubscriptionLimits> = {
   free: {
-    maxTransactions: 10,
-    maxTasks: 5,
-    maxGoals: 3,
-    maxDebts: 5,
+    maxTransactions: Infinity,
+    maxTasks: Infinity,
+    maxGoals: Infinity,
+    maxDebts: Infinity,
     canUseAnalytics: false
   },
   trial: {
