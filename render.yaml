@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: finance-app
+    env: static
+    buildCommand: cd client && npm install && npm run build
+    staticPublicPath: client/dist
+    routes:
+      - path: /*
+        destination: /index.html
+    envvars:
+      - key: NODE_ENV
+        value: production
