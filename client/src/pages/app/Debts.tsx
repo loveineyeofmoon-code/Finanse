@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useDebts } from '../../hooks/useDebts';
+import { useUserData } from '../../hooks/useUserData';
 import { formatCurrency, formatDate } from '../../utils/format';
+import { isLimitReached, getLimitErrorMessage, getLimitInfo } from '../../utils/subscription';
 import Modal from '../../components/Modal';
 import { useNavigate } from 'react-router-dom';
 
 const Debts: React.FC = () => {
   const { debts, create, remove } = useDebts();
+  const userData = useUserData();
   const navigate = useNavigate();
   const [showAdd, setShowAdd] = useState(false);
   const [form, setForm] = useState({
@@ -18,6 +21,10 @@ const Debts: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLimitReached(debts.length, userData, 'debts')) {
+      alert(getLimitErrorMessage('debts'));
+      return;
+    }
     const amount = parseFloat(String(form.amount)) || 0;
     if (amount <= 0) return;
     await create({ ...form, amount } as any);
@@ -29,10 +36,25 @@ const Debts: React.FC = () => {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2>Учет долгов</h2>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <button className="btn btn-primary" onClick={() => setShowAdd(true)}>Добавить долг</button>
-          <button className="btn btn-outline" onClick={() => navigate('/app/profile')}>Профиль</button>
+        <div style={{ marginRight: '1rem', fontSize: '0.9rem', color: '#666' }}>
+          {getLimitInfo(userData, debts.length, 'debts')}
         </div>
+      </div>
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <button 
+          className="btn btn-primary" 
+          onClick={() => {
+            if (isLimitReached(debts.length, userData, 'debts')) {
+              alert(getLimitErrorMessage('debts'));
+            } else {
+              setShowAdd(true);
+            }
+          }}
+          disabled={isLimitReached(debts.length, userData, 'debts')}
+        >
+          Добавить долг
+        </button>
+        <button className="btn btn-outline" onClick={() => navigate('/app/profile')}>Профиль</button>
       </div>
 
       {showAdd && (

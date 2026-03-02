@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { useTasks } from '../../hooks/useTasks';
+import { useUserData } from '../../hooks/useUserData';
 import { getPriorityText } from '../../utils/helpers';
 import { formatDate } from '../../utils/format';
+import { isLimitReached, getLimitErrorMessage, getLimitInfo } from '../../utils/subscription';
 import ConfirmModal from '../../components/ConfirmModal';
 import Modal from '../../components/Modal';
 
 
 const Tasks: React.FC = () => {
   const { tasks, create, toggle, remove } = useTasks();
+  const userData = useUserData();
   const [showConfirm, setShowConfirm] = useState(false);
   const [pendingId, setPendingId] = useState<string | null>(null);
 
@@ -38,6 +41,10 @@ const Tasks: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLimitReached(tasks.length, userData, 'tasks')) {
+      alert(getLimitErrorMessage('tasks'));
+      return;
+    }
     await create({ ...form, completed: false });
     setForm({ title: '', description: '', priority: 'medium', dueDate: '' });
     setShowAdd(false);
@@ -46,7 +53,21 @@ const Tasks: React.FC = () => {
   return (
     <div>
       <h2>Задачи</h2>
-      <button className="btn btn-primary" onClick={() => setShowAdd(true)} style={{ marginBottom: 20 }}>
+      <div style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#666' }}>
+        {getLimitInfo(userData, tasks.length, 'tasks')}
+      </div>
+      <button 
+        className="btn btn-primary" 
+        onClick={() => {
+          if (isLimitReached(tasks.length, userData, 'tasks')) {
+            alert(getLimitErrorMessage('tasks'));
+          } else {
+            setShowAdd(true);
+          }
+        }}
+        disabled={isLimitReached(tasks.length, userData, 'tasks')}
+        style={{ marginBottom: 20 }}
+      >
         Добавить задачу
       </button>
       {showAdd && (

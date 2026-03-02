@@ -47,3 +47,18 @@ export interface Card {
   holder: string;
   addedAt?: Date;
 }
+
+export interface Payment {
+  id: string;
+  userId: string;
+  paymentId: string; // ЮКасса payment ID
+  amount: number;
+  currency: string;
+  description: string;
+  status: string; // 'succeeded' | 'pending' | 'failed'
+  userEmail: string;
+  orderId: string;
+  product: string;
+  createdAt?: Date;
+  confirmedAt?: Date | null;
+}

@@ -12,9 +12,11 @@ import {
   updateDoc,
   Unsubscribe,
   serverTimestamp,
-  Timestamp
+  Timestamp,
+  getDoc,
+  getDocs
 } from 'firebase/firestore';
-import { Transaction, Task, Goal, Debt, Card } from '../types';
+import { Transaction, Task, Goal, Debt, Card, Payment } from '../types';
 
 // common helper to build queries for a user
 function userCollectionPath<T>(name: string, userId: string) {
@@ -331,5 +333,128 @@ export async function deleteUserDocument(userId: string) {
     console.warn('Failed to delete user document', err);
     throw err;
   }
+}
 
+// payments
+export async function createPaymentRecord(
+  userId: string,
+  paymentId: string,
+  amount: number,
+  email: string,
+  orderId: string,
+  status: string = 'pending'
+): Promise<string> {
+  const docRef = await addDoc(collection(db, 'payments'), {
+    userId,
+    paymentId,
+    amount,
+    currency: 'RUB',
+    description: 'Премиум подписка Money in Sight - 1 месяц',
+    status,
+    userEmail: email,
+    orderId,
+    product: 'premium_subscription_monthly',
+    createdAt: serverTimestamp(),
+    confirmedAt: status === 'succeeded' ? serverTimestamp() : null
+  });
+  return docRef.id;
+}
+
+export async function updatePaymentStatus(
+  paymentRecordId: string,
+  status: string,
+  yookassaPaymentId?: string
+): Promise<void> {
+  const updates: any = { status };
+  if (status === 'succeeded') {
+    updates.confirmedAt = serverTimestamp();
+  }
+  await updateDoc(doc(db, 'payments', paymentRecordId), updates);
+}
+
+export async function getPaymentByYookassaId(yookassaPaymentId: string): Promise<Payment | null> {
+  const q = query(collection(db, 'payments'), where('paymentId', '==', yookassaPaymentId));
+  const snapshot = await getDocs(q);
+  if (snapshot.empty) return null;
+  const doc = snapshot.docs[0];
+  return {
+    id: doc.id,
+    ...doc.data(),
+    createdAt: doc.data().createdAt?.toDate?.() || new Date(),
+    confirmedAt: doc.data().confirmedAt?.toDate?.() || null
+  } as Payment;
+}
+
+export function subscribePayments(userId: string, callback: (items: Payment[]) => void): Unsubscribe {
+  const q = query(
+    collection(db, 'payments'),
+    where('userId', '==', userId),
+    orderBy('createdAt', 'desc')
+  );
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const list: Payment[] = [];
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data() as any;
+        list.push({
+          id: docSnap.id,
+          ...data,
+          createdAt: convertTimestamp(data.createdAt),
+          confirmedAt: data.confirmedAt ? convertTimestamp(data.confirmedAt) : null
+        });
+      });
+      callback(list);
+    },
+    (error) => {
+      console.error('Error fetching payments:', error);
+      callback([]);
+    }
+  );
+}
+
+export async function activateSubscription(userId: string, endDate: Date): Promise<void> {
+  await setDoc(
+    doc(db, 'users', userId),
+    {
+      subscription: 'premium',
+      subscriptionActive: true,
+      subscriptionEndDate: endDate.toISOString(),
+      updatedAt: serverTimestamp()
+    },
+    { merge: true }
+  );
+}
+
+// check and update trial/premium status when user data is fetched
+export async function checkAndUpdateTrialStatus(userId: string): Promise<void> {
+  const userRef = doc(db, 'users', userId);
+  const snap = await getDoc(userRef);
+  if (!snap.exists()) return;
+  const data = snap.data() as any;
+
+  const now = new Date();
+
+  if (data.subscription === 'trial' && data.trialEndDate) {
+    const end = new Date(data.trialEndDate);
+    if (now > end) {
+      await setDoc(userRef, {
+        subscription: 'free',
+        subscriptionActive: false,
+        trialUsed: true,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    }
+  }
+
+  if (data.subscription === 'premium' && data.subscriptionEndDate) {
+    const end = new Date(data.subscriptionEndDate);
+    if (now > end) {
+      await setDoc(userRef, {
+        subscription: 'free',
+        subscriptionActive: false,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    }
+  }
 }

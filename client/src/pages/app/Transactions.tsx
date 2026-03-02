@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { useTransactions } from '../../hooks/useTransactions';
+import { useUserData } from '../../hooks/useUserData';
 import { categories } from '../../utils/categories';
 import { formatCurrency, formatDate } from '../../utils/format';
+import { isLimitReached, getLimitErrorMessage, getLimitInfo } from '../../utils/subscription';
 import Modal from '../../components/Modal';
 import { useNavigate } from 'react-router-dom';
 
 const Transactions: React.FC = () => {
   const { transactions, create, remove } = useTransactions();
+  const userData = useUserData();
   const navigate = useNavigate();
   const [showAdd, setShowAdd] = useState(false);
+  const [limitError, setLimitError] = useState('');
   const [formData, setFormData] = useState({
     type: 'expense',
     amount: '',
@@ -19,12 +23,17 @@ const Transactions: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLimitReached(transactions.length, userData, 'transactions')) {
+      setLimitError(getLimitErrorMessage('transactions'));
+      return;
+    }
     const amount = Number(formData.amount);
     if (isNaN(amount) || amount <= 0) return;
     try {
       await create({ ...formData, amount } as any);
       setFormData({ ...formData, amount: '', description: '' });
       setShowAdd(false);
+      setLimitError('');
     } catch (err) {
       console.error(err);
     }
@@ -34,15 +43,31 @@ const Transactions: React.FC = () => {
     <div>
       <div className="page-header">
         <h2>Транзакции</h2>
+        <div style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#666' }}>
+          {getLimitInfo(userData, transactions.length, 'transactions')}
+        </div>
         <div className="controls">
-          <button className="btn btn-primary" onClick={() => setShowAdd(true)}>Добавить транзакцию</button>
+          <button 
+            className="btn btn-primary" 
+            onClick={() => {
+              if (isLimitReached(transactions.length, userData, 'transactions')) {
+                alert(getLimitErrorMessage('transactions'));
+              } else {
+                setShowAdd(true);
+              }
+            }}
+            disabled={isLimitReached(transactions.length, userData, 'transactions')}
+          >
+            Добавить транзакцию
+          </button>
           <button className="btn btn-outline" onClick={() => navigate('/app/analytics')}>Аналитика</button>
         </div>
       </div>
 
       {showAdd && (
-          <Modal onClose={() => setShowAdd(false)}>
+          <Modal onClose={() => { setShowAdd(false); setLimitError(''); }}>
           <h2 className="modal-title">Новая транзакция</h2>
+          {limitError && <p style={{ color: '#e53e3e', marginBottom: '1rem' }}>⚠️ {limitError}</p>}
           <form onSubmit={handleSubmit} className="modal-form">
             <div className="form-group">
               <label>Тип</label>

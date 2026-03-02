@@ -1,10 +1,13 @@
 import React from 'react';
 import { useGoals } from '../../hooks/useGoals';
+import { useUserData } from '../../hooks/useUserData';
 import { formatCurrency, formatDate } from '../../utils/format';
+import { isLimitReached, getLimitErrorMessage, getLimitInfo } from '../../utils/subscription';
 import Modal from '../../components/Modal';
 
 const Goals: React.FC = () => {
   const { goals, create, update, remove } = useGoals();
+  const userData = useUserData();
   const [showModal, setShowModal] = React.useState(false);
   const [form, setForm] = React.useState({
     title: '',
@@ -16,6 +19,10 @@ const Goals: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLimitReached(goals.length, userData, 'goals')) {
+      alert(getLimitErrorMessage('goals'));
+      return;
+    }
     const targetAmount = parseFloat(String(form.targetAmount)) || 0;
     const currentAmount = parseFloat(String(form.currentAmount)) || 0;
     if (!form.title || targetAmount <= 0) return;
@@ -30,7 +37,24 @@ const Goals: React.FC = () => {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2>Финансовые цели</h2>
-        <button className="btn btn-primary" onClick={() => setShowModal(true)}>Добавить цель</button>
+        <div style={{ marginRight: '1rem', fontSize: '0.9rem', color: '#666' }}>
+          {getLimitInfo(userData, goals.length, 'goals')}
+        </div>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+        <button 
+          className="btn btn-primary" 
+          onClick={() => {
+            if (isLimitReached(goals.length, userData, 'goals')) {
+              alert(getLimitErrorMessage('goals'));
+            } else {
+              setShowModal(true);
+            }
+          }}
+          disabled={isLimitReached(goals.length, userData, 'goals')}
+        >
+          Добавить цель
+        </button>
       </div>
 
       {showModal && (
