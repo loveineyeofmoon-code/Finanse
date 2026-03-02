@@ -61,9 +61,10 @@ const PaymentModal: React.FC<Props> = ({ onClose }) => {
           }
         }, 3000);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setPaymentStatus('Ошибка при создании платежа');
+      const msg = err.message || 'Ошибка при создании платежа';
+      setPaymentStatus(`Ошибка: ${msg}`);
       setLoading(false);
     }
   };
