@@ -1740,6 +1740,144 @@ textarea.form-control {
     font-family: inherit;
 }
 
+/* ==================== СТИЛИ ДЛЯ СТРАНИЦ АВТОРИЗАЦИИ ==================== */
+.auth-page {
+    min-height: calc(100vh - 140px);
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-5) var(--space-3);
+    background: var(--bg-app);
+}
+
+.auth-box {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-lg);
+    padding: var(--space-6);
+    width: 100%;
+    max-width: 440px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.auth-box h2 {
+    text-align: center;
+    margin-bottom: var(--space-5);
+    color: var(--dark);
+    font-size: var(--fs-h2);
+}
+
+.auth-box .form-group {
+    margin-bottom: var(--space-4);
+}
+
+.auth-box .form-group label {
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+    color: var(--dark);
+}
+
+.auth-box .form-control {
+    width: 100%;
+    padding: 16px 18px;
+    font-size: var(--fs-base);
+    border-radius: 12px;
+}
+
+.auth-box .btn {
+    width: 100%;
+    padding: 16px 24px;
+    font-size: var(--fs-base);
+    font-weight: 600;
+    margin-top: var(--space-3);
+}
+
+.auth-box .auth-links {
+    text-align: center;
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    color: var(--gray);
+    font-size: var(--fs-base);
+}
+
+.auth-box .auth-links a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.auth-box .auth-links a:hover {
+    color: var(--primary-light);
+    text-decoration: underline;
+}
+
+/* Мобильная адаптация страниц авторизации */
+@media (max-width: 480px) {
+    .auth-content {
+        padding: var(--space-4) var(--space-3);
+        align-items: flex-start;
+        padding-top: var(--space-5);
+    }
+    
+    .auth-box {
+        padding: var(--space-5) var(--space-4);
+        border-radius: 16px;
+    }
+    
+    .auth-box h2 {
+        font-size: 1.75rem;
+        margin-bottom: var(--space-4);
+    }
+    
+    .auth-box .form-group {
+        margin-bottom: var(--space-3);
+    }
+    
+    .auth-box .form-control {
+        padding: 14px 16px;
+        font-size: 16px; /* Предотвращает зум на iOS */
+    }
+    
+    .auth-box .btn {
+        padding: 14px 20px;
+        font-size: var(--fs-base);
+        margin-top: var(--space-3);
+    }
+    
+    .auth-box .auth-links {
+        font-size: var(--fs-sm);
+        margin-top: var(--space-3);
+        padding-top: var(--space-3);
+    }
+}
+    
+/* Очень маленькие экраны */
+@media (max-width: 360px) {
+    .auth-box {
+        padding: var(--space-4) var(--space-3);
+    }
+    
+    .auth-box h2 {
+        font-size: 1.5rem;
+    }
+    
+    .auth-box .form-control {
+        padding: 12px 14px;
+    }
+    
+    .auth-box .btn {
+        padding: 12px 18px;
+    }
+}
+
 /* trust indicators under hero */
 .trust-indicators {
     margin-top: 40px;
@@ -1994,7 +2132,7 @@ textarea.form-control {
         transform: translateY(0) scale(1);
     }
 }
-
+    
 .close-modal {
     position: absolute;
     top: var(--space-4);
@@ -2310,7 +2448,7 @@ textarea.form-control {
         opacity: 0.5;
     }
 }
-
+    
 @keyframes slideInUp {
     from {
         transform: translateY(20px);
@@ -3532,18 +3670,56 @@ textarea.form-control {
         margin-bottom: var(--space-2);
     }
     
-    /* Кнопки */
+    /* Кнопки - улучшенная мобильная адаптация */
     .btn {
-        padding: 10px 18px;
-        font-size: var(--fs-sm);
+        padding: 14px 24px;
+        font-size: 16px; /* Предотвращает зум на iOS */
+        font-weight: 600;
+        border-radius: 12px;
+        min-height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
     }
     
     .btn-sm {
-        padding: 8px 14px;
+        padding: 10px 18px;
+        font-size: 14px;
+        min-height: 44px;
     }
     
     .btn-lg {
-        padding: 14px 28px;
+        padding: 16px 32px;
+        font-size: 18px;
+        min-height: 56px;
+    }
+    
+    .btn-full {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    /* Кнопки в формах на мобильных */
+    .auth-box .btn,
+    .modal .btn {
+        width: 100%;
+        margin-top: var(--space-3);
+    }
+    
+    /* Кнопки действий в таблицах на мобильных */
+    .action-buttons {
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+    
+    .action-buttons .btn,
+    .action-buttons .action-btn {
+        width: 100%;
+        justify-content: center;
     }
     
     /* Формы */
@@ -3634,7 +3810,7 @@ textarea.form-control {
     .container {
         padding: 0 var(--space-2);
     }
-    
+
     .hero-title {
         font-size: 1.75rem;
     }
@@ -3767,22 +3943,22 @@ textarea.form-control {
     
     /* Улучшенные стили для input полей - критически важно для видимости */
     .form-control {
-        background: #334155;
-        border-color: #475569;
-        color: var(--dark);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        background: #1e293b;
+        border: 2px solid #475569;
+        color: #ffffff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
     }
     
     .form-control:hover {
-        background: #3f4e63;
-        border-color: rgba(102, 126, 234, 0.5);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        background: #263347;
+        border-color: #64748b;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     }
     
     .form-control:focus {
-        background: #334155;
-        border-color: var(--primary);
-        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.25);
+        background: #1e293b;
+        border-color: #818cf8;
+        box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.3);
     }
     
     .form-control::placeholder {
@@ -3790,24 +3966,98 @@ textarea.form-control {
     }
     
     .form-control:disabled {
-        background: #475569;
-        color: #94a3b8;
+        background: #334155;
+        color: #64748b;
     }
     
     .form-group label {
-        color: var(--dark);
+        color: #e2e8f0;
+        font-weight: 600;
     }
     
-    /* Кнопки в темной теме */
+    /* Страницы авторизации - особые стили для хорошей видимости */
+    .auth-page {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        min-height: 100vh;
+    }
+    
+    .auth-content {
+        background: transparent;
+    }
+    
+    .auth-box {
+        background: #1e293b;
+        border: 2px solid #334155;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+    
+    .auth-box h2 {
+        color: #ffffff;
+    }
+    
+    .auth-box .form-group label {
+        color: #e2e8f0;
+    }
+    
+    /* Кнопки в темной теме - улучшенная видимость */
+    .btn-primary {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: #ffffff;
+        border: none;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    }
+    
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        transform: translateY(-2px);
+    }
+    
     .btn-outline {
-        border-color: var(--primary);
-        color: #e0e7ff;
+        border-color: #818cf8;
+        color: #c7d2fe;
         background: transparent;
     }
     
     .btn-outline:hover {
-        background: rgba(102, 126, 234, 0.15);
+        background: rgba(129, 140, 248, 0.2);
         border-color: #a5b4fc;
+    }
+    
+    .btn-success {
+        background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+        color: #ffffff;
+        border: none;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    }
+    
+    .btn-success:hover {
+        background: linear-gradient(135deg, #34d399 0%, #6ee7b7 100%);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+    }
+    
+    .btn-danger {
+        background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+        color: #ffffff;
+        border: none;
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+    }
+    
+    .btn-danger:hover {
+        background: linear-gradient(135deg, #f87171 0%, #fca5a5 100%);
+        box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+    }
+    
+    /* Вторичные кнопки в темной теме */
+    .btn-secondary {
+        background: #334155;
+        color: #e2e8f0;
+        border: 2px solid #475569;
+    }
+    
+    .btn-secondary:hover {
+        background: #475569;
+        border-color: #64748b;
     }
     
     /* Таблицы в темной теме */
@@ -3817,18 +4067,18 @@ textarea.form-control {
     
     th {
         background: #0f172a;
-        color: var(--dark);
-        border-color: #475569;
+        color: #e2e8f0;
+        border-color: #334155;
     }
     
     td {
-        border-color: #475569;
-        color: var(--dark);
+        border-color: #334155;
+        color: #e2e8f0;
     }
     
     /* Заголовки в темной теме */
     h1, h2, h3, h4, h5, h6 {
-        color: var(--dark);
+        color: #ffffff;
     }
     
     /* Элементы меню и навигации */
@@ -3838,7 +4088,7 @@ textarea.form-control {
     
     .sidebar-menu a:hover {
         background: rgba(102, 126, 234, 0.1);
-        color: var(--dark);
+        color: #ffffff;
     }
     
     /* Особые стили для ползунков и других элементов */
@@ -3848,7 +4098,7 @@ textarea.form-control {
     
     input[type="checkbox"],
     input[type="radio"] {
-        accent-color: var(--primary);
+        accent-color: #818cf8;
     }
     
     /* Селект элементы */
