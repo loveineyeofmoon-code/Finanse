@@ -1,15 +1,27 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 
 /**
- * Хук для управления видимостью header при скролле вниз по странице
- * Header скрывается при скролле вниз и показывается при скролле вверх
- * Реализовано с использованием useRef для избежания мерцания
+ * Хук для управления видимостью header при скролле
+ * Header скрывается при скролле вниз и показывается только по кнопке
  */
 export const useHeaderScroll = () => {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [isForcedVisible, setIsForcedVisible] = useState(false);
   const lastScrollY = useRef(0);
   const scrollDirection = useRef<'up' | 'down' | null>(null);
-  const scrollThreshold = 150; // Порог для смены направления
+  const scrollThreshold = 100; // Порог для скрытия
+
+  // Функция для принудительного показа header (по кнопке)
+  const showHeader = useCallback(() => {
+    setIsForcedVisible(true);
+    setIsHeaderVisible(true);
+  }, []);
+
+  // Функция для скрытия header
+  const hideHeader = useCallback(() => {
+    setIsForcedVisible(false);
+    setIsHeaderVisible(false);
+  }, []);
 
   useEffect(() => {
     let ticking = false;
@@ -24,6 +36,12 @@ export const useHeaderScroll = () => {
             setIsHeaderVisible(true);
             lastScrollY.current = currentScrollY;
             scrollDirection.current = null;
+            ticking = false;
+            return;
+          }
+
+          // Если header принудительно показан (по кнопке), не скрываем автоматически
+          if (isForcedVisible) {
             ticking = false;
             return;
           }
@@ -43,9 +61,9 @@ export const useHeaderScroll = () => {
                 }
               }
             } else {
-              // Скроллим вверх - всегда показываем
+              // Скроллим вверх - НЕ показываем автоматически, только по кнопке
               scrollDirection.current = 'up';
-              setIsHeaderVisible(true);
+              // Убрали автоматическое появление при скролле вверх
             }
             lastScrollY.current = currentScrollY;
           }
@@ -61,7 +79,7 @@ export const useHeaderScroll = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [isForcedVisible]);
 
-  return isHeaderVisible;
+  return { isHeaderVisible, showHeader, hideHeader, setIsForcedVisible };
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 interface BottomNavProps {
   isOpen: boolean;
@@ -7,17 +7,17 @@ interface BottomNavProps {
 }
 
 const BottomNav: React.FC<BottomNavProps> = ({ isOpen, onClose }) => {
-  const navigate = useNavigate();
   const [showMore, setShowMore] = useState(false);
 
+  // Слева: Транзакции, По центру: Дашборд, Справа: Аналитика
   const mainLinks = [
-    { to: '/app/transactions', label: 'Транзакции', icon: 'fas fa-exchange-alt' },
-    { to: '/app/analytics', label: 'Аналитика', icon: 'fas fa-chart-pie' },
-    { label: 'Ещё', icon: 'fas fa-bars', isMore: true },
+    { to: '/app/transactions', label: 'Транзакции', icon: 'fas fa-exchange-alt', position: 'left' },
+    { to: '/app', label: 'Главная', icon: 'fas fa-home', position: 'center', exact: true },
+    { to: '/app/analytics', label: 'Аналитика', icon: 'fas fa-chart-pie', position: 'right' },
   ];
 
+  // Остальные разделы в "Ещё"
   const moreLinks = [
-    { to: '/app', label: 'Дашборд', icon: 'fas fa-chart-line', exact: true },
     { to: '/app/tasks', label: 'Задачи', icon: 'fas fa-tasks' },
     { to: '/app/goals', label: 'Цели', icon: 'fas fa-bullseye' },
     { to: '/app/debts', label: 'Долги', icon: 'fas fa-hand-holding-usd' },
@@ -36,7 +36,6 @@ const BottomNav: React.FC<BottomNavProps> = ({ isOpen, onClose }) => {
 
   return (
     <>
-      {/* Semi-transparent overlay when more menu is open */}
       {showMore && (
         <div 
           className="bottom-nav-overlay"
@@ -44,41 +43,53 @@ const BottomNav: React.FC<BottomNavProps> = ({ isOpen, onClose }) => {
         />
       )}
 
-      {/* Bottom Navigation Bar */}
       <nav className={`bottom-nav ${isOpen ? 'active' : ''}`}>
-        {mainLinks.map((link, index) => (
-          link.isMore ? (
-            <button
-              key="more"
-              className={`bottom-nav-item ${showMore ? 'active' : ''}`}
-              onClick={handleMoreClick}
-              type="button"
-            >
-              <i className={link.icon}></i>
-              <span>{link.label}</span>
-            </button>
-          ) : (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              className={({ isActive }) => `bottom-nav-item ${isActive ? 'active' : ''}`}
-              end={link.to === '/app'}
-              onClick={handleLinkClick}
-            >
-              <i className={link.icon}></i>
-              <span>{link.label}</span>
-            </NavLink>
-          )
-        ))}
+        {/* Основные ссылки */}
+        <NavLink
+          to="/app/transactions"
+          className={({ isActive }) => `bottom-nav-item ${isActive ? 'active' : ''}`}
+          onClick={handleLinkClick}
+        >
+          <i className="fas fa-exchange-alt"></i>
+          <span>Транзакции</span>
+        </NavLink>
+
+        <NavLink
+          to="/app"
+          className={({ isActive }) => `bottom-nav-item ${isActive ? 'active' : ''}`}
+          end
+          onClick={handleLinkClick}
+        >
+          <i className="fas fa-home"></i>
+          <span>Главная</span>
+        </NavLink>
+
+        <NavLink
+          to="/app/analytics"
+          className={({ isActive }) => `bottom-nav-item ${isActive ? 'active' : ''}`}
+          onClick={handleLinkClick}
+        >
+          <i className="fas fa-chart-pie"></i>
+          <span>Аналитика</span>
+        </NavLink>
+
+        {/* Кнопка "Ещё" */}
+        <button
+          className={`bottom-nav-item bottom-nav-more-btn ${showMore ? 'active' : ''}`}
+          onClick={handleMoreClick}
+          type="button"
+        >
+          <i className="fas fa-bars"></i>
+          <span>Ещё</span>
+        </button>
         
-        {/* More menu dropdown */}
+        {/* Выпадающее меню "Ещё" */}
         <div className={`bottom-nav-more ${showMore ? 'open' : ''}`}>
           {moreLinks.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
               className={({ isActive }) => `bottom-nav-more-item ${isActive ? 'active' : ''}`}
-              end={link.exact}
               onClick={handleLinkClick}
             >
               <i className={link.icon}></i>

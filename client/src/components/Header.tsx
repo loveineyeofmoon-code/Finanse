@@ -8,12 +8,24 @@ interface HeaderProps {
   onOpenRegister?: () => void;
   onOpenContact?: () => void;
   hideOnScroll?: boolean;
+  onToggleHeader?: () => void;
+  isHeaderVisible?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ onOpenLogin, onOpenRegister, onOpenContact, hideOnScroll = true }) => {
+const Header: React.FC<HeaderProps> = ({ 
+  onOpenLogin, 
+  onOpenRegister, 
+  onOpenContact, 
+  hideOnScroll = true,
+  onToggleHeader,
+  isHeaderVisible: externalVisible
+}) => {
   const { user, logout } = useAuth();
   const location = useLocation();
-  const isHeaderVisible = useHeaderScroll();
+  const scrollVisible = useHeaderScroll();
+  
+  // Используем внешнее значение или значение из хука
+  const isHeaderVisible = externalVisible !== undefined ? externalVisible : scrollVisible;
   
   const shouldHideOnScroll = hideOnScroll && !user && location.pathname === '/';
   const headerClass = shouldHideOnScroll && !isHeaderVisible ? 'hidden' : '';
@@ -42,15 +54,6 @@ const Header: React.FC<HeaderProps> = ({ onOpenLogin, onOpenRegister, onOpenCont
             </div>
           ) : (
             <div className="header-actions" id="headerActions">
-              {onOpenContact ? (
-                <button type="button" className="btn btn-outline" onClick={onOpenContact}>
-                  Контакты
-                </button>
-              ) : (
-                <Link to="/contact" className="btn btn-outline">
-                  Контакты
-                </Link>
-              )}
               {onOpenLogin ? (
                 <button type="button" className="btn btn-outline" onClick={onOpenLogin}>
                   Войти
