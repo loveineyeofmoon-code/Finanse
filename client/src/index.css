@@ -1148,6 +1148,30 @@ tbody tr:last-child td {
         padding: 8px;
     }
     
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-3);
+        margin-bottom: var(--space-4);
+    }
+    
+    .page-header h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0;
+        width: 100%;
+    }
+    
+    .controls {
+        width: 100%;
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+    
+    .controls .btn {
+        width: 100%;
+        margin: 0;
+    }
+    
     .modal-content {
         padding: 16px;
         border-radius: 10px;
@@ -3277,10 +3301,32 @@ textarea.form-control {
     font-size: var(--fs-xs);
   }
   
+  .category-badge i {
+    font-size: 0.75rem;
+    margin-right: 4px;
+  }
+  
   .transaction-actions .action-btn {
     padding: 6px 12px;
     font-size: var(--fs-sm);
   }
+}
+
+/* Убедимся, что иконки Font Awesome видны везде */
+i[class*="fas"],
+i[class*="far"],
+i[class*="fab"] {
+  display: inline-block;
+  line-height: 1;
+}
+
+.category-badge i,
+.action-button i,
+.transaction-date i,
+.action-btn i {
+  font-size: inherit;
+  width: auto;
+  height: auto;
 }
 
 /* ==================== АДАПТИВНОСТЬ ДЛЯ ВСЕХ УСТРОЙСТВ ==================== */

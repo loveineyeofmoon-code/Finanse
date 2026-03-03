@@ -123,53 +123,133 @@ const Tasks: React.FC = () => {
       </Modal>
       )}
 
-      <div className="table-container">
-        {showConfirm && (
-          <ConfirmModal
-            message="Вы уверены, что хотите удалить задачу?"
-            onConfirm={handleConfirm}
-            onCancel={() => setShowConfirm(false)}
-          />
-        )}
-        <table>
-          <thead>
-            <tr>
-              <th>Название</th>
-              <th>Описание</th>
-              <th>Приоритет</th>
-              <th>Дата</th>
-              <th>Статус</th>
-              <th>Действия</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div className="transactions-section">
+        <div className="transactions-list mobile-cards">
+          {showConfirm && (
+            <ConfirmModal
+              message="Вы уверены, что хотите удалить задачу?"
+              onConfirm={handleConfirm}
+              onCancel={() => setShowConfirm(false)}
+            />
+          )}
+          
+          {/* Десктопная таблица */}
+          <div className="desktop-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Название</th>
+                  <th>Описание</th>
+                  <th>Приоритет</th>
+                  <th>Дата</th>
+                  <th>Статус</th>
+                  <th>Действия</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tasks.map(task => (
+                  <tr key={task.id}>
+                    <td>{task.title}</td>
+                    <td>{task.description || '-'}</td>
+                    <td>{getPriorityText(task.priority)}</td>
+                    <td>{formatDate(task.dueDate)}</td>
+                    <td>{task.completed ? 'Выполнено' : 'В процессе'}</td>
+                    <td>
+                      <div className="action-buttons">
+                        <button
+                          className="btn btn-outline action-btn"
+                          onClick={() => toggle(task.id, !task.completed)}
+                        >
+                          {task.completed ? 'Возобновить' : 'Завершить'}
+                        </button>
+                        <button
+                          className="btn btn-outline action-btn"
+                          onClick={() => confirmDelete(task.id)}
+                        >
+                          Удалить
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Мобильные карточки */}
+          <div className="transaction-cards-container">
             {tasks.map(task => (
-              <tr key={task.id}>
-                <td>{task.title}</td>
-                <td>{task.description || '-'}</td>
-                <td>{getPriorityText(task.priority)}</td>
-                <td>{formatDate(task.dueDate)}</td>
-                <td>{task.completed ? 'Выполнено' : 'В процессе'}</td>
-                <td>
-                  <div className="action-buttons">
-                    <button
-                      className="btn btn-outline action-btn"
+              <div 
+                key={task.id} 
+                className={`transaction-card-mobile ${task.completed ? 'completed' : ''}`}
+              >
+                {/* Заголовок: название и статус */}
+                <div className="transaction-header">
+                  <div className="transaction-date">
+                    <i className={`fas ${task.completed ? 'fa-check-circle' : 'fa-circle'}`}></i>
+                    <span>{task.title}</span>
+                  </div>
+                  <div 
+                    className={`transaction-type-badge ${task.priority}`}
+                    style={{
+                      background: task.priority === 'high' ? 'rgba(245, 101, 101, 0.1)' 
+                        : task.priority === 'medium' ? 'rgba(237, 137, 54, 0.1)'
+                        : 'rgba(72, 187, 120, 0.1)',
+                      color: task.priority === 'high' ? 'var(--danger)'
+                        : task.priority === 'medium' ? 'var(--warning)'
+                        : 'var(--success)'
+                    }}
+                  >
+                    {getPriorityText(task.priority)}
+                  </div>
+                </div>
+
+                {/* Основное содержимое: описание */}
+                <div className="transaction-content">
+                  <div className="transaction-description">
+                    <div className={`transaction-description-text ${!task.description ? 'transaction-description-empty' : ''}`}>
+                      {task.description || 'Без описания'}
+                    </div>
+                  </div>
+                  <div className="transaction-amount">
+                    <div className="transaction-amount-value" style={{ 
+                      color: task.completed ? 'var(--success)' : 'var(--warning)',
+                      fontSize: 'var(--fs-base)'
+                    }}>
+                      {task.completed ? '✓ Выполнено' : 'В процессе'}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Футер карточки: дата и действия */}
+                <div className="transaction-footer">
+                  <div className="transaction-category">
+                    <div className="category-badge">
+                      <i className="fas fa-calendar"></i>
+                      <span>{formatDate(task.dueDate) || 'Без даты'}</span>
+                    </div>
+                  </div>
+                  <div className="transaction-actions">
+                    <button 
+                      className="action-button btn-outline" 
                       onClick={() => toggle(task.id, !task.completed)}
                     >
-                      {task.completed ? 'Возобновить' : 'Завершить'}
+                      <i className={`fas ${task.completed ? 'fa-redo' : 'fa-check'}`}></i>
+                      <span>{task.completed ? 'Возобновить' : 'Готово'}</span>
                     </button>
-                    <button
-                      className="btn btn-outline action-btn"
+                    <button 
+                      className="action-button btn-outline" 
                       onClick={() => confirmDelete(task.id)}
                     >
-                      Удалить
+                      <i className="fas fa-trash"></i>
+                      <span>Удалить</span>
                     </button>
                   </div>
-                </td>
-              </tr>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </div>
       </div>
     </div>
   );

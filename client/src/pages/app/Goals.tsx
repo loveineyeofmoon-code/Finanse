@@ -127,42 +127,121 @@ const Goals: React.FC = () => {
         </Modal>
       )}
 
-      <div className="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Название</th>
-              <th>Целевая</th>
-              <th>Текущая</th>
-              <th>Прогресс</th>
-              <th>Дата цели</th>
-              <th>Действия</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div className="transactions-section">
+        <div className="transactions-list mobile-cards">
+          {/* Десктопная таблица */}
+          <div className="desktop-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Название</th>
+                  <th>Целевая</th>
+                  <th>Текущая</th>
+                  <th>Прогресс</th>
+                  <th>Дата цели</th>
+                  <th>Действия</th>
+                </tr>
+              </thead>
+              <tbody>
+                {goals.map(goal => (
+                  <tr key={goal.id}>
+                    <td>{goal.title}</td>
+                    <td>{formatCurrency(goal.targetAmount)}</td>
+                    <td>{formatCurrency(goal.currentAmount)}</td>
+                    <td>
+                      <div style={{ background: '#e2e8f0', borderRadius: 10, height: 10 }}>
+                        <div
+                          style={{
+                            background: 'var(--primary)',
+                            height: '100%',
+                            borderRadius: 10,
+                            width: `${progress(goal)}%`
+                          }}
+                        />
+                      </div>
+                      <div style={{ textAlign: 'center', marginTop: 5 }}>{progress(goal).toFixed(1)}%</div>
+                    </td>
+                    <td>{formatDate(goal.targetDate)}</td>
+                    <td>
+                      <div className="action-buttons">
+                        <button
+                          className="btn btn-outline action-btn"
+                          onClick={() => {
+                            const newAmt = prompt('Введите новую сумму', String(goal.currentAmount));
+                            if (newAmt !== null) {
+                              const val = parseFloat(newAmt);
+                              if (!isNaN(val)) update(goal.id, { currentAmount: val });
+                            }
+                          }}
+                        >💰 Добавить</button>
+                        <button
+                          className="btn btn-outline action-btn"
+                          style={{ background: 'var(--danger)', color: 'white' }}
+                          onClick={() => remove(goal.id)}
+                        >🗑️ Удалить</button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Мобильные карточки */}
+          <div className="transaction-cards-container">
             {goals.map(goal => (
-              <tr key={goal.id}>
-                <td>{goal.title}</td>
-                <td>{formatCurrency(goal.targetAmount)}</td>
-                <td>{formatCurrency(goal.currentAmount)}</td>
-                <td>
-                  <div style={{ background: '#e2e8f0', borderRadius: 10, height: 10 }}>
+              <div key={goal.id} className="transaction-card-mobile">
+                {/* Заголовок: название и категория */}
+                <div className="transaction-header">
+                  <div className="transaction-date">
+                    <i className="fas fa-bullseye"></i>
+                    <span>{goal.title}</span>
+                  </div>
+                </div>
+
+                {/* Основное содержимое: целевая и текущая сумма */}
+                <div className="transaction-content">
+                  <div className="transaction-description">
+                    <div className="transaction-description-text">
+                      {formatCurrency(goal.currentAmount)}
+                    </div>
+                    <div style={{ fontSize: 'var(--fs-sm)', color: 'var(--gray)' }}>
+                      из {formatCurrency(goal.targetAmount)}
+                    </div>
+                  </div>
+                  <div className="transaction-amount">
+                    <div className="transaction-amount-value" style={{ color: 'var(--primary)' }}>
+                      {progress(goal).toFixed(1)}%
+                    </div>
+                  </div>
+                </div>
+
+                {/* Полоса прогресса */}
+                <div style={{ marginBottom: 'var(--space-3)', paddingBottom: 'var(--space-3)', borderBottom: '1px solid rgba(0, 0, 0, 0.1)' }}>
+                  <div style={{ background: '#e2e8f0', borderRadius: 10, height: 8, overflow: 'hidden' }}>
                     <div
                       style={{
                         background: 'var(--primary)',
                         height: '100%',
                         borderRadius: 10,
-                        width: `${progress(goal)}%`
+                        width: `${progress(goal)}%`,
+                        transition: 'width 0.3s ease'
                       }}
                     />
                   </div>
-                  <div style={{ textAlign: 'center', marginTop: 5 }}>{progress(goal).toFixed(1)}%</div>
-                </td>
-                <td>{formatDate(goal.targetDate)}</td>
-                <td>
-                  <div className="action-buttons">
-                    <button
-                      className="btn btn-outline action-btn"
+                </div>
+
+                {/* Футер карточки: дата и действия */}
+                <div className="transaction-footer">
+                  <div className="transaction-category">
+                    <div className="category-badge">
+                      <i className="fas fa-calendar"></i>
+                      <span>{formatDate(goal.targetDate)}</span>
+                    </div>
+                  </div>
+                  <div className="transaction-actions">
+                    <button 
+                      className="action-button btn-outline" 
                       onClick={() => {
                         const newAmt = prompt('Введите новую сумму', String(goal.currentAmount));
                         if (newAmt !== null) {
@@ -170,18 +249,23 @@ const Goals: React.FC = () => {
                           if (!isNaN(val)) update(goal.id, { currentAmount: val });
                         }
                       }}
-                    >💰 Добавить</button>
-                    <button
-                      className="btn btn-outline action-btn"
-                      style={{ background: 'var(--danger)', color: 'white' }}
+                    >
+                      <i className="fas fa-plus"></i>
+                      <span>Добавить</span>
+                    </button>
+                    <button 
+                      className="action-button btn-outline" 
                       onClick={() => remove(goal.id)}
-                    >🗑️ Удалить</button>
+                    >
+                      <i className="fas fa-trash"></i>
+                      <span>Удалить</span>
+                    </button>
                   </div>
-                </td>
-              </tr>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </div>
       </div>
     </div>
   );
