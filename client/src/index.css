@@ -793,7 +793,7 @@ tbody tr:last-child td {
         margin-left: auto;
     }
 }
-    
+
 .action-btn {
     padding: 8px 12px;
     border-radius: 10px;
@@ -2954,15 +2954,15 @@ textarea.form-control {
   line-height: 1.4;
 }
 
-.transaction-type .type-badge {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
+    /* select control fallback for mobile browsers */
+    select.form-control::-ms-expand {
+        display: none;
+    }
+    select.form-control:-moz-focusring {
+        color: transparent;
+        text-shadow: 0 0 0 #000;
+    }
+
 
 .badge-income {
   background: rgba(72, 187, 120, 0.1);
@@ -4150,6 +4150,13 @@ i[class*="fab"] {
     /* Селект элементы */
     select.form-control {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23e0e7ff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 12px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        padding-right: 2.5rem; /* create space for arrow */
     }
     
     .scroll-shadow::before {
