@@ -156,7 +156,7 @@ const Debts: React.FC = () => {
           {/* Мобильные карточки */}
           <div className="transaction-cards-container">
             {debts.map(d => (
-              <div key={d.id} className={`transaction-card-mobile ${d.type === 'debt_income' ? 'income' : 'expense'}`}>
+              <div key={d.id} className={`transaction-card ${d.type === 'debt_income' ? 'income' : 'expense'}`}>
                 {/* Заголовок: тип и сумма */}
                 <div className="transaction-header">
                   <div className="transaction-date">

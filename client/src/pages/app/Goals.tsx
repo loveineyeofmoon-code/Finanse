@@ -190,7 +190,7 @@ const Goals: React.FC = () => {
           {/* Мобильные карточки */}
           <div className="transaction-cards-container">
             {goals.map(goal => (
-              <div key={goal.id} className="transaction-card-mobile">
+              <div key={goal.id} className="transaction-card">
                 {/* Заголовок: название и категория */}
                 <div className="transaction-header">
                   <div className="transaction-date">

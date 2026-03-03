@@ -1,17 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useHeaderScroll } from '../hooks/useHeaderScroll';
 
 interface HeaderProps {
   onOpenLogin?: () => void;
   onOpenRegister?: () => void;
   onOpenContact?: () => void;
+  hideOnScroll?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ onOpenLogin, onOpenRegister, onOpenContact }) => {
+const Header: React.FC<HeaderProps> = ({ onOpenLogin, onOpenRegister, onOpenContact, hideOnScroll = true }) => {
   const { user, logout } = useAuth();
+  const location = useLocation();
+  const isHeaderVisible = useHeaderScroll();
+  
+  const shouldHideOnScroll = hideOnScroll && !user && location.pathname === '/';
+  const headerClass = shouldHideOnScroll && !isHeaderVisible ? 'hidden' : '';
+  
   return (
-    <header>
+    <header className={headerClass}>
       <div className="container">
         <div className="header-content">
           <Link to={user ? '/app' : '/'} className="logo">

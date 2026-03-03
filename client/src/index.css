@@ -91,6 +91,12 @@ header {
     top: 0;
     z-index: 1000;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+header.hidden {
+    transform: translateY(-100%);
+    box-shadow: none;
 }
 
 .header-content {
@@ -248,6 +254,12 @@ header {
     line-height: 1.6;
 }
 
+@media (prefers-color-scheme: dark) {
+    .hero-subtitle {
+        color: #e2e8f0;
+    }
+}
+
 .hero-stats {
     display: flex;
     justify-content: center;
@@ -299,6 +311,16 @@ header {
     margin-right: auto;
 }
 
+@media (prefers-color-scheme: dark) {
+    .section-title {
+        color: #ffffff;
+    }
+    
+    .section-subtitle {
+        color: #cbd5e1;
+    }
+}
+
 .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -316,13 +338,7 @@ header {
     border: 1px solid rgba(255, 255, 255, 0.2);
     position: relative;
     overflow: hidden;
-}
-
-.feature-icon { font-size: 2.4rem; margin-bottom: var(--space-3); color: var(--primary); }
-.feature-title { font-size: var(--fs-lg); margin-bottom: var(--space-2); color: var(--dark); }
-.feature-description { color: var(--gray); font-size: var(--fs-base); line-height: 1.6; }
-
-.feature-card::before {
+}\n\n.feature-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -504,14 +520,27 @@ header {
 
 .sidebar-toggle {
     display: none;
-    padding: 10px 16px;
-    border-radius: 999px;
+    padding: 12px 20px;
+    border-radius: 12px;
     border: none;
     background: var(--gradient);
     color: #fff;
     font-weight: 600;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    font-size: 1rem;
+    align-items: center;
+    gap: 10px;
+    transition: var(--transition);
+}
+
+.sidebar-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.sidebar-toggle:active {
+    transform: translateY(0);
 }
 
 .page {
@@ -3070,6 +3099,13 @@ textarea.form-control {
     gap: var(--space-3);
   }
   
+  /* Контейнер для карточек */
+  .transaction-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  
   /* Стили для карточек транзакций */
   .transaction-card {
     background: var(--bg-card);
@@ -4137,6 +4173,49 @@ i[class*="fab"] {
         color: #ffffff;
     }
     
+    .sidebar-toggle {
+        background: var(--gradient);
+        color: #ffffff;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .sidebar-toggle:hover {
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    /* Hero элементы в темном режиме */
+    .hero-stat-number {
+        color: #818cf8;
+    }
+    
+    .hero-stat-label {
+        color: #cbd5e1;
+    }
+    
+    .features {
+        background: rgba(30, 41, 59, 0.7);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Feature карточки улучшены для темного режима */
+    .feature-card {
+        background: #1e293b;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .feature-card:hover {
+        background: #263347;
+        box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2);
+    }
+    
+    .feature-title {
+        color: #ffffff;
+    }
+    
+    .feature-description {
+        color: #cbd5e1;
+    }
+    
     /* Особые стили для ползунков и других элементов */
     input[type="range"] {
         accent-color: var(--primary);
@@ -4168,12 +4247,13 @@ i[class*="fab"] {
     }
     
     /* Карточки транзакций в темной теме */
-    .transaction-card-mobile {
+    .transaction-card-mobile,
+    .transaction-card {
         background: #1e293b;
         border-color: rgba(255, 255, 255, 0.1);
     }
     
-    .transaction-card-mobile::before {
+    .transaction-card::before {
         opacity: 0.9;
     }
     
@@ -4362,6 +4442,7 @@ i[class*="fab"] {
     .trust-item {
         background: rgba(30, 41, 59, 0.8);
         border-color: rgba(255, 255, 255, 0.1);
+        color: #cbd5e1;
     }
     
     /* Demo image в темной теме */
@@ -4410,46 +4491,6 @@ i[class*="fab"] {
     }
 }
 
-/* ==================== СТРУКТУРИРОВАННЫЕ КАРТОЧКИ ТРАНЗАКЦИЙ ДЛЯ МОБИЛЬНЫХ ==================== */
-
-/* Специальные стили для структурированных мобильных карточек транзакций */
-.transaction-card-mobile {
-    display: flex;
-    flex-direction: column;
-    background: var(--bg-card);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    padding: var(--space-4);
-    margin-bottom: var(--space-3);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    position: relative;
-    overflow: hidden;
-    transition: var(--transition);
-}
-
-.transaction-card-mobile:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
-
-/* Верхняя цветная полоска для типа транзакции */
-.transaction-card-mobile::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--gradient);
-}
-
-.transaction-card-mobile.income::before {
-    background: var(--success);
-}
-
-.transaction-card-mobile.expense::before {
-    background: var(--danger);
-}
 
 /* Заголовок карточки: дата и тип */
 .transaction-header {
@@ -4591,7 +4632,7 @@ i[class*="fab"] {
 
 /* Стили для очень маленьких экранов */
 @media (max-width: 480px) {
-    .transaction-card-mobile {
+    .transaction-card {
         padding: var(--space-3);
     }
     

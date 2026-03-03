@@ -181,7 +181,7 @@ const Tasks: React.FC = () => {
             {tasks.map(task => (
               <div 
                 key={task.id} 
-                className={`transaction-card-mobile ${task.completed ? 'completed' : ''}`}
+                className={`transaction-card ${task.completed ? 'completed' : ''}`}
               >
                 {/* Заголовок: название и статус */}
                 <div className="transaction-header">

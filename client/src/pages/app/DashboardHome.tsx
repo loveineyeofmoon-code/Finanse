@@ -140,7 +140,7 @@ const DashboardHome: React.FC = () => {
                 const badgeBgColor = cat?.color ? `${cat.color}15` : 'rgba(113, 128, 150, 0.1)';
                 
                 return (
-                  <div key={tx.id} className={`transaction-card-mobile ${tx.type === 'income' ? 'income' : 'expense'}`}>
+                  <div key={tx.id} className={`transaction-card ${tx.type === 'income' ? 'income' : 'expense'}`}>
                     {/* Верхняя строка: дата и тип */}
                     <div className="transaction-header">
                       <div className="transaction-date">
