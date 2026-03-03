@@ -21,6 +21,7 @@ const Home: React.FC = () => {
         onOpenLogin={() => setActiveModal('login')}
         onOpenRegister={() => setActiveModal('register')}
         onOpenContact={() => setActiveModal('contact')}
+        hideOnScroll={false}
       />
       <Hero
         onOpenLogin={() => setActiveModal('login')}

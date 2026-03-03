@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
+import BottomNav from '../components/BottomNav';
 import { useAuth } from '../context/AuthContext';
 import { useUserData } from '../hooks/useUserData';
 
@@ -46,6 +47,7 @@ const Dashboard: React.FC = () => {
         </div>
         <Outlet />
       </div>
+      <BottomNav isOpen={true} onClose={() => {}} />
     </div>
   );
 };
