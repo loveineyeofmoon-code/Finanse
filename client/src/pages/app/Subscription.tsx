@@ -30,33 +30,27 @@ const Subscription: React.FC = () => {
     return '📦 Бесплатный тариф';
   };
 
-  return (
+return (
     <div>
       <h2>Подписка Money in Sight</h2>
-      <div style={{
-        padding: '1rem',
-        marginBottom: '1.5rem',
-        background: '#f0f9ff',
-        border: '1px solid #bfdbfe',
-        borderRadius: '8px'
-      }}>
+      <div className="subscription-status-card">
         <p style={{ margin: 0 }}>{statusMessage()}</p>
       </div>
 
 
 
-      <div className="subscription-plans">
+<div className="subscription-plans">
         <div className="plan-card" style={{
           opacity: currentSubscription === 'free' ? 1 : 0.7
         }}>
           <div className="plan-name">Бесплатный</div>
           <div className="plan-price">0 ₽</div>
           <div className="plan-period">навсегда</div>
-          <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '1rem' }}>
-            <p style={{ margin: '0.25rem 0' }}>• До 10 транзакций</p>
-            <p style={{ margin: '0.25rem 0' }}>• До 5 задач</p>
-            <p style={{ margin: '0.25rem 0' }}>• До 3 целей</p>
-            <p style={{ margin: '0.25rem 0' }}>• ✗ Без аналитики</p>
+          <div className="plan-features">
+            <p>• До 10 транзакций</p>
+            <p>• До 5 задач</p>
+            <p>• До 3 целей</p>
+            <p>• ✗ Без аналитики</p>
           </div>
           <button className="btn btn-outline" disabled={currentSubscription !== 'free'}>
             {currentSubscription === 'free' ? 'Текущий план' : 'Понизить'}
@@ -69,11 +63,11 @@ const Subscription: React.FC = () => {
           <div className="plan-name">🎁 Пробный</div>
           <div className="plan-price">0 ₽</div>
           <div className="plan-period">14 дней</div>
-          <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '1rem' }}>
-            <p style={{ margin: '0.25rem 0' }}>• Безлимитные транзакции</p>
-            <p style={{ margin: '0.25rem 0' }}>• Безлимитные задачи</p>
-            <p style={{ margin: '0.25rem 0' }}>• Безлимитные цели</p>
-            <p style={{ margin: '0.25rem 0' }}>• ✓ Полная аналитика</p>
+          <div className="plan-features">
+            <p>• Безлимитные транзакции</p>
+            <p>• Безлимитные задачи</p>
+            <p>• Безлимитные цели</p>
+            <p>• ✓ Полная аналитика</p>
           </div>
           <button className="btn btn-outline" disabled={currentSubscription !== 'trial'}>
             {currentSubscription === 'trial' ? 'Активно' : 'Уже использован'}
@@ -86,11 +80,11 @@ const Subscription: React.FC = () => {
           <div className="plan-name">⭐ Премиум</div>
           <div className="plan-price">199 ₽</div>
           <div className="plan-period">в месяц</div>
-          <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '1rem' }}>
-            <p style={{ margin: '0.25rem 0' }}>• Безлимитные транзакции</p>
-            <p style={{ margin: '0.25rem 0' }}>• Безлимитные задачи</p>
-            <p style={{ margin: '0.25rem 0' }}>• Безлимитные цели</p>
-            <p style={{ margin: '0.25rem 0' }}>• ✓ Полная аналитика</p>
+          <div className="plan-features">
+            <p>• Безлимитные транзакции</p>
+            <p>• Безлимитные задачи</p>
+            <p>• Безлимитные цели</p>
+            <p>• ✓ Полная аналитика</p>
           </div>
           <button 
             className="btn btn-primary" 
