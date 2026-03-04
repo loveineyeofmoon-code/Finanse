@@ -17,16 +17,19 @@ const Header: React.FC<HeaderProps> = ({
   onOpenRegister, 
   onOpenContact, 
   hideOnScroll = true,
-  onToggleHeader,
   isHeaderVisible: externalVisible
 }) => {
   const { user, logout } = useAuth();
   const location = useLocation();
-  const scrollVisible = useHeaderScroll();
+  
+  // На лендинге (hideOnScroll=false) или для авторизованных - не используем хук скролла
+  const scrollData = !hideOnScroll ? { isHeaderVisible: true } : useHeaderScroll();
+  const scrollVisible = scrollData.isHeaderVisible;
   
   // Используем внешнее значение или значение из хука
   const isHeaderVisible = externalVisible !== undefined ? externalVisible : scrollVisible;
   
+  // Если hideOnScroll=false - header всегда видим и не скрывается
   const shouldHideOnScroll = hideOnScroll && !user && location.pathname === '/';
   const headerClass = shouldHideOnScroll && !isHeaderVisible ? 'hidden' : '';
   
